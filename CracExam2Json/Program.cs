@@ -6,9 +6,9 @@ namespace CracExam2Json;
 
 internal class Program
 {
-    public static void Main(string[] args)
+    public static void Main(string?[] args)
     {
-        var path = args[0];
+        var path = args[0] ?? "questions.txt";
 
         var rawFile = File.ReadAllLines(path);
 
@@ -75,6 +75,6 @@ internal class Program
         }
 
         var json = JsonConvert.SerializeObject(questions);
-        File.WriteAllText("questions.json", json);
+        File.WriteAllText(args[1] ?? "questions.json", json);
     }
 }
