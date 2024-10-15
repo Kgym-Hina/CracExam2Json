@@ -8,6 +8,18 @@ internal class Program
 {
     public static void Main(string?[] args)
     {
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Usage: CracExam2Json <path> [output]");
+            return;
+        }
+
+        if (args.Length == 1)
+        {
+            Console.WriteLine("Output file not specified, using default name: questions.json");
+            args = new[] {args[0], "questions.json"};
+        }
+        
         var path = args[0] ?? "questions.txt";
 
         var rawFile = File.ReadAllLines(path);
