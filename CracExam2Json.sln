@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CracExam2Json", "CracExam2Json\CracExam2Json.csproj", "{4ED6F613-808E-44ED-99DC-96086413559D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4ED6F613-808E-44ED-99DC-96086413559D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ED6F613-808E-44ED-99DC-96086413559D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ED6F613-808E-44ED-99DC-96086413559D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ED6F613-808E-44ED-99DC-96086413559D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
