@@ -1,80 +1,80 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Diagnostics;
-using System.Text.Json;
-using CracExam2Json;
+using Newtonsoft.Json;
 
-Console.WriteLine("路径：");
-var path = Console.ReadLine() ?? "questions.txt";
+namespace CracExam2Json;
 
-var rawFile = File.ReadAllLines(path);
-
-var currentQuestionId = "";
-var questions = new List<Question>();
-
-foreach (var line in rawFile)
+internal class Program
 {
-    if (line.StartsWith("[I]"))
+    public static void Main(string[] args)
     {
-        currentQuestionId = line[3..];
-        Console.WriteLine($"\"{currentQuestionId}\": {{");
-        // 创建新问题
-        if (questions.All(q => q.Id != currentQuestionId))
+        var path = args[0];
+
+        var rawFile = File.ReadAllLines(path);
+
+        var currentQuestionId = "";
+        var questions = new List<Question>();
+
+        foreach (var line in rawFile)
         {
-            questions.Add(new Question
+            if (line.StartsWith("[I]"))
             {
-                Id = currentQuestionId,
-                Choices = new List<string>()
-            });
-        }
-    }
-    else if (line.StartsWith("[Q]"))
-    {
-        // 添加问题文本
-        var question = line[3..];
-        Console.WriteLine($"\"{currentQuestionId}\": \"{question}\",");
-        questions.First(q => q.Id == currentQuestionId).Text = question;
-    }
-    else if (line.StartsWith("[A]"))
-    {
-        // 添加答案
-        var answer = line[3..];
-        Console.WriteLine($"\"{currentQuestionId}A\": \"{answer}\",");
-        questions.First(q => q.Id == currentQuestionId).Choices.Insert(0, answer);
-    }
-    else if (line.StartsWith("[B]"))
-    {
-        // 添加选项
-        var choice = line[3..];
-        Console.WriteLine($"\"{currentQuestionId}B\": \"{choice}\",");
-        questions.First(q => q.Id == currentQuestionId).Choices.Add(choice);
+                currentQuestionId = line[3..];
+                Console.WriteLine($"\"{currentQuestionId}\": {{");
+                // 创建新问题
+                if (questions.All(q => q.Id != currentQuestionId))
+                {
+                    questions.Add(new Question
+                    {
+                        Id = currentQuestionId,
+                        Choices = new List<string>()
+                    });
+                }
+            }
+            else if (line.StartsWith("[Q]"))
+            {
+                // 添加问题文本
+                var question = line[3..];
+                Console.WriteLine($"\"{currentQuestionId}\": \"{question}\",");
+                questions.First(q => q.Id == currentQuestionId).Text = question;
+            }
+            else if (line.StartsWith("[A]"))
+            {
+                // 添加答案
+                var answer = line[3..];
+                Console.WriteLine($"\"{currentQuestionId}A\": \"{answer}\",");
+                questions.First(q => q.Id == currentQuestionId).Choices.Insert(0, answer);
+            }
+            else if (line.StartsWith("[B]"))
+            {
+                // 添加选项
+                var choice = line[3..];
+                Console.WriteLine($"\"{currentQuestionId}B\": \"{choice}\",");
+                questions.First(q => q.Id == currentQuestionId).Choices.Add(choice);
         
-    }
-    else if (line.StartsWith("[C]"))
-    {
-        // 添加选项
-        var choice = line[3..];
-        Console.WriteLine($"\"{currentQuestionId}C\": \"{choice}\",");
-        questions.First(q => q.Id == currentQuestionId).Choices.Add(choice);
-    }
-    else if (line.StartsWith("[D]"))
-    {
-        // 添加选项
-        var choice = line[3..];
-        Console.WriteLine($"\"{currentQuestionId}D\": \"{choice}\",");
-        questions.First(q => q.Id == currentQuestionId).Choices.Add(choice);
-    }
-    else if (line.StartsWith("[P]"))
-    {
-        currentQuestionId = "";
-        Console.WriteLine("====================");
+            }
+            else if (line.StartsWith("[C]"))
+            {
+                // 添加选项
+                var choice = line[3..];
+                Console.WriteLine($"\"{currentQuestionId}C\": \"{choice}\",");
+                questions.First(q => q.Id == currentQuestionId).Choices.Add(choice);
+            }
+            else if (line.StartsWith("[D]"))
+            {
+                // 添加选项
+                var choice = line[3..];
+                Console.WriteLine($"\"{currentQuestionId}D\": \"{choice}\",");
+                questions.First(q => q.Id == currentQuestionId).Choices.Add(choice);
+            }
+            else if (line.StartsWith("[P]"))
+            {
+                currentQuestionId = "";
+                Console.WriteLine("====================");
+            }
+        }
+
+        var json = JsonConvert.SerializeObject(questions);
+        File.WriteAllText("questions.json", json);
     }
 }
-
-var json = JsonSerializer.Serialize(questions, new JsonSerializerOptions
-{
-    WriteIndented = true
-});
-
-Console.WriteLine(json);
-File.WriteAllText("questions.json", json);
