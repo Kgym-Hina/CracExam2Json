@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Text;
 using Newtonsoft.Json;
 
 namespace CracExam2Json;
@@ -8,21 +9,23 @@ internal class Program
 {
     public static void Main(string?[] args)
     {
-        if (args.Length == 0)
+        switch (args.Length)
         {
-            Console.WriteLine("Usage: CracExam2Json <path> [output]");
-            return;
+            case 0:
+                Console.WriteLine("Usage: CracExam2Json <path> [output]");
+                return;
+            case 1:
+                Console.WriteLine("Output file not specified, using default name: questions.json");
+                args = new[] {args[0], "questions.json"};
+                break;
         }
 
-        if (args.Length == 1)
-        {
-            Console.WriteLine("Output file not specified, using default name: questions.json");
-            args = new[] {args[0], "questions.json"};
-        }
-        
+        var is2312 = args.Any(x => x is "--gb2312" or "-g");
+
         var path = args[0] ?? "questions.txt";
 
-        var rawFile = File.ReadAllLines(path);
+        var encoding = GB2312Encoding.Instance;
+        var rawFile = File.ReadAllLines(path, is2312 ? encoding : Encoding.UTF8);
 
         var currentQuestionId = "";
         var questions = new List<Question>();
